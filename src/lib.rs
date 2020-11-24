@@ -54,10 +54,9 @@ pub fn with_level(level: log::LevelFilter) {
     #[cfg(not(target_arch = "wasm32"))]
     {
         // Use ndjson in release mode, pretty logging while debugging.
-        if cfg!(debug_assertions) {
-            pretty::start(level);
-        } else {
-            ndjson::start(level);
-        }
+        #[cfg(debug_assertions)]
+        pretty::start(level);
+        #[cfg(not(debug_assertions))]
+        ndjson::start(level);
     }
 }
